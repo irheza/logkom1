@@ -25,181 +25,180 @@ public class TestRect extends JPanel implements MouseMotionListener {
 
     public TestRect() {
 
-  addMouseListener(new MouseAdapter() {
+        addMouseListener(new MouseAdapter() {
 
-@Override
+            @Override
 
-public void mousePressed(MouseEvent evt) {
+            public void mousePressed(MouseEvent evt) {
 
-    int x = evt.getX();
+                int x = evt.getX();
 
-    int y = evt.getY();
+                int y = evt.getY();
 
-    currentSquareIndex = getRec(x, y);
+                currentSquareIndex = getRec(x, y);
 
-    if (currentSquareIndex < 0) // not inside a square
+                if (currentSquareIndex < 0) // not inside a square
+                {
 
-    {
+                    add(x, y);
 
-  add(x, y);
+                }
 
-    }
+            }
 
-}
+            @Override
 
-@Override
+            public void mouseClicked(MouseEvent evt) {
 
-public void mouseClicked(MouseEvent evt) {
+                int x = evt.getX();
 
-    int x = evt.getX();
+                int y = evt.getY();
 
-    int y = evt.getY();
+                if (evt.getClickCount() >= 2) {
 
-    if (evt.getClickCount() >= 2) {
+                    remove(currentSquareIndex);
 
-  remove(currentSquareIndex);
+                }
 
-    }
+            }
 
-}
+        });
 
-  });
-
-  addMouseMotionListener(this);
+        addMouseMotionListener(this);
     }
 
     @Override
     public void paintComponent(Graphics g) {
 
-  super.paintComponent(g);
+        super.paintComponent(g);
 
-  for (int i = 0; i < numOfRecs; i++) {
+        for (int i = 0; i < numOfRecs; i++) {
 
-((Graphics2D) g).draw(rect[i]);
+            ((Graphics2D) g).draw(rect[i]);
 
-  }
+        }
     }
 
     public int getRec(int x, int y) {
 
-  for (int i = 0; i < numOfRecs; i++) {
+        for (int i = 0; i < numOfRecs; i++) {
 
-if (rect[i].contains(x, y)) {
+            if (rect[i].contains(x, y)) {
 
-    return i;
+                return i;
 
-}
+            }
 
-  }
+        }
 
-  return -1;
+        return -1;
     }
 
     public void add(int x, int y) {
 
-  if (numOfRecs < MAX) {
+        if (numOfRecs < MAX) {
 
-rect[numOfRecs] = new Rectangle(x, y, recW, recW);
+            rect[numOfRecs] = new Rectangle(x, y, recW, recW);
 
-currentSquareIndex = numOfRecs;
+            currentSquareIndex = numOfRecs;
 
-numOfRecs++;
+            numOfRecs++;
 
-repaint();
+            repaint();
 
-  }
+        }
     }
 
     @Override
     public void remove(int n) {
 
-  if (n < 0 || n >= numOfRecs) {
+        if (n < 0 || n >= numOfRecs) {
 
-return;
+            return;
 
-  }
+        }
 
-  numOfRecs--;
+        numOfRecs--;
 
-  rect[n] = rect[numOfRecs];
+        rect[n] = rect[numOfRecs];
 
-  if (currentSquareIndex == n) {
+        if (currentSquareIndex == n) {
 
-currentSquareIndex = -1;
+            currentSquareIndex = -1;
 
-  }
+        }
 
-  repaint();
+        repaint();
     }
 
     @Override
     public void mouseMoved(MouseEvent event) {
 
-  int x = event.getX();
+        int x = event.getX();
 
-  int y = event.getY();
+        int y = event.getY();
 
-  if (getRec(x, y) >= 0) {
+        if (getRec(x, y) >= 0) {
 
-setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 
-  } else {
+        } else {
 
-setCursor(Cursor.getDefaultCursor());
+            setCursor(Cursor.getDefaultCursor());
 
-  }
+        }
     }
 
     @Override
     public void mouseDragged(MouseEvent event) {
 
-  int x = event.getX();
+        int x = event.getX();
 
-  int y = event.getY();
+        int y = event.getY();
 
-  if (currentSquareIndex >= 0) {
+        if (currentSquareIndex >= 0) {
 
-Graphics graphics = getGraphics();
+            Graphics graphics = getGraphics();
 
-graphics.setXORMode(getBackground());
+            graphics.setXORMode(getBackground());
 
-((Graphics2D) graphics).draw(rect[currentSquareIndex]);
+            ((Graphics2D) graphics).draw(rect[currentSquareIndex]);
 
-rect[currentSquareIndex].x = x;
+            rect[currentSquareIndex].x = x;
 
-rect[currentSquareIndex].y = y;
+            rect[currentSquareIndex].y = y;
 
-((Graphics2D) graphics).draw(rect[currentSquareIndex]);
+            ((Graphics2D) graphics).draw(rect[currentSquareIndex]);
 
-graphics.dispose();
+            graphics.dispose();
 
-  }
+        }
     }
 
     public static void main(String[] args) {
 
-  JFrame jFrame = new JFrame();
+        JFrame jFrame = new JFrame();
 
-  jFrame.setTitle("");
+        jFrame.setTitle("");
 
-  jFrame.setSize(300, 200);
+        jFrame.setSize(300, 200);
 
-  jFrame.addWindowListener(new WindowAdapter() {
+        jFrame.addWindowListener(new WindowAdapter() {
 
-@Override
+            @Override
 
-public void windowClosing(WindowEvent e) {
+            public void windowClosing(WindowEvent e) {
 
-    System.exit(0);
+                System.exit(0);
 
-}
+            }
 
-  });
+        });
 
-  Container cPane = jFrame.getContentPane();
+        Container cPane = jFrame.getContentPane();
 
-  cPane.add(new TestRect());
+        cPane.add(new TestRect());
 
-  jFrame.setVisible(true);
+        jFrame.setVisible(true);
     }
 }
