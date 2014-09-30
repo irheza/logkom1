@@ -1,9 +1,12 @@
 
+import graph.Minisat;
 import gui.MainGUI;
 import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
+import org.sat4j.specs.ContradictionException;
+import org.sat4j.specs.TimeoutException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,7 +19,7 @@ import javax.swing.JFrame;
  * @author V Anugrah
  */
 public class Runner {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ContradictionException, TimeoutException {
         JFrame jFrame = new JFrame();
 
         // jFrame.add(ok);
@@ -28,8 +31,9 @@ public class Runner {
                 System.exit(0);
             }
         });
-        Container cPane = jFrame.getContentPane();        
-        cPane.add(new MainGUI());
+        MainGUI mg = new MainGUI();
+        Container cPane = jFrame.getContentPane();
+        cPane.add(mg);        
 
         jFrame.setVisible(true);
     }    

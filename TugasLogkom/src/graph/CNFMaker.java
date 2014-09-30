@@ -18,10 +18,10 @@ public class CNFMaker {
     {
         this.graph = graph;
     }
-    public ArrayList<Integer[]> makeCNF()
+    public ArrayList<int[]> makeCNF()
     {
         ArrayList<Edge> terhubung = graph.getEdgeList();
-        ArrayList<Integer[]> tmp = new ArrayList<Integer[]>();
+        ArrayList<int[]> tmp = new ArrayList<int[]>();
         for(int i=0; i<terhubung.size();i++)
         {
             int a = terhubung.get(i).r1;
@@ -34,10 +34,10 @@ public class CNFMaker {
             int b0 = Integer.parseInt(b0s);
             String b1s= ""+b+"1";
             int b1 = Integer.parseInt(b1s);
-            Integer[] clause1 = {-a0, -b0, -a1,-b1};
-            Integer[] clause2 = {-a0, -b0, a1,b1};
-            Integer[] clause3 = {a0, b0, -a1,-b1};
-            Integer[] clause4 = {a0, b0, a1,b1};
+            int[] clause1 = {-a0, -b0, -a1,-b1};
+            int[] clause2 = {-a0, -b0, a1,b1};
+            int[] clause3 = {a0, b0, -a1,-b1};
+            int[] clause4 = {a0, b0, a1,b1};
             tmp.add(clause1);
             tmp.add(clause2);
             tmp.add(clause3);

@@ -11,8 +11,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import org.sat4j.specs.ContradictionException;
+import org.sat4j.specs.TimeoutException;
 
 public class MainGUI extends JPanel implements MouseMotionListener {
 
@@ -34,22 +38,29 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                     for (int j = i + 1; j < numOfRecs; j++) {
 
                         if (rect[i].intersects(rect[j])) {
-                            graph.addRect(i, j);
-                            System.out.println(i + " dengan " + j);
+                            graph.addRect(i+1, j+1);
+                            System.out.println((i+1) + " dengan " + (j+1));
                         }
                     }
                 }
                 CNFMaker cnf = new CNFMaker(graph);
-                ArrayList<Integer[]> tmp = cnf.makeCNF();
+                ArrayList<int[]> tmp = cnf.makeCNF();
                 for (int i = 0; i < tmp.size(); i++) {
-                    Integer[] hasil = tmp.get(i);
+                    int[] hasil = tmp.get(i);
                     System.out.print("{ ");
                     for (int j = 0; j < hasil.length; j++) {
                         System.out.print(hasil[j] + " ");
                     }
                     System.out.println(" }");
                 }
-
+                Minisat m = new Minisat(cnf);
+                try {
+                    m.solve();
+                } catch (ContradictionException ex) {
+                    System.out.println("Contradiction exception");
+                } catch (TimeoutException ex) {
+                    System.out.println("Timeout exception");
+                }
             }
         });
         this.add(ok);
