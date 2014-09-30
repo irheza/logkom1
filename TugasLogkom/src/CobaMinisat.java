@@ -4,12 +4,9 @@
  * and open the template in the editor.
  */
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.reader.DimacsReader;
-import org.sat4j.reader.ParseFormatException;
 import org.sat4j.reader.Reader;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.IProblem;
