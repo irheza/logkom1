@@ -1,6 +1,7 @@
 package gui;
 
 import graph.*;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,8 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import org.sat4j.specs.ContradictionException;
@@ -27,6 +26,9 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     private int currentSquareIndex = -1;
     private boolean addRecStatus = true;
     private Graph graph = new Graph();
+    
+    private boolean colorStatus = false;
+    private int[] listColor = {};
 
     public MainGUI() {
         JButton ok = new JButton("ok");
@@ -55,7 +57,9 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 }
                 Minisat m = new Minisat(cnf);
                 try {
-                    m.solve();
+                    listColor = m.solve();
+                    colorStatus = true;
+                    repaint();
                 } catch (ContradictionException ex) {
                     System.out.println("Contradiction exception");
                 } catch (TimeoutException ex) {
@@ -97,8 +101,20 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
+        Color c = Color.black;
+        
         for (int i = 0; i < numOfRecs; i++) {
-            ((Graphics2D) g).draw(rect[i]);
+            Graphics2D g2 = ((Graphics2D) g);
+            g2.setColor(c);
+            g2.draw(rect[i]);
+            
+            // decode color
+            if (colorStatus){
+                EncodedColor e = new EncodedColor(listColor[i*2], listColor[i*2+1]);
+                c = e.getColor();
+                g2.setColor(c);
+                g2.fill(rect[i]);
+            }
         }
     }
 

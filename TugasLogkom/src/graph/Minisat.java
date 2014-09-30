@@ -28,10 +28,10 @@ public class Minisat {
         this.cnf = cnf;
         clauses = cnf.makeCNF();
     }
-    public String solve() throws ContradictionException, TimeoutException{
+    public int[] solve() throws ContradictionException, TimeoutException{
         final int MAXVAR = 10000;
         final int MAXCLAUSES = clauses.size();
-        
+        int[] value = {};
         ISolver solver = SolverFactory.newDefault();
         solver.newVar(MAXVAR);
         solver.setExpectedNumberOfClauses(MAXCLAUSES);
@@ -42,16 +42,16 @@ public class Minisat {
         
         IProblem problem = solver;
         Reader reader = new DimacsReader(solver);
-        String result = "";
+        
         if (problem.isSatisfiable()) {
             System.out.println("dapet");
-            result = reader.decode(problem.model());
+            value = problem.model();
+            String result = reader.decode(value);
             System.out.println(result);
         }
         else{
             System.out.println("gagal");
         }
-        
-        return result;
+        return value;
     }
 }

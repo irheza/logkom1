@@ -42,8 +42,7 @@ public class CNFMaker {
             tmp.add(clause2);
             tmp.add(clause3);
             tmp.add(clause4);
-        }
-       
+        }       
         return tmp;
     }
 }
