@@ -29,6 +29,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     private Graph graph = new Graph();
     
     private boolean isColored = false;
+    private boolean isRectangle = false;
     private int[] listColor = {};
     private Minisat m = null;
 
@@ -88,7 +89,6 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         show.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("show");
                 if (m != null && isColored){
                     try {
                         // masukkan daftar warna yang boleh
@@ -116,12 +116,34 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         bottomButtonPanel.add(new JPanel());
         bottomButtonPanel.add(new JPanel());
         
+        JPanel westBP = new JPanel();
+        westBP.setLayout(new GridLayout(8,1));
+        JButton recButton = new JButton("Rectangle");
+        JButton squareButton = new JButton("Square");
+        
+        recButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isRectangle = true;
+            }
+        });
+        squareButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isRectangle = false;
+            }
+        });
+        
+        westBP.add(recButton);
+        westBP.add(squareButton);
+        
         this.add(topButtonPanel, BorderLayout.NORTH);
         this.add(bottomButtonPanel, BorderLayout.SOUTH);
+        this.add(westBP, BorderLayout.WEST);
+        this.add(new JPanel(), BorderLayout.EAST);
         this.setBackground(Color.white);
 
-        addMouseListener(new MouseAdapter() {
-
+        this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
                 if (addRecStatus) {
@@ -199,7 +221,12 @@ public class MainGUI extends JPanel implements MouseMotionListener {
 
     public void add(int x, int y) {
         if (numOfRecs < MAX) {
-            rect[numOfRecs] = new Rectangle(x, y, recW, recW);
+            if (isRectangle){
+                rect[numOfRecs] = new Rectangle(x, y, 100, recW);
+            }
+            else{
+                rect[numOfRecs] = new Rectangle(x, y, recW, recW);
+            }            
             currentSquareIndex = numOfRecs;
             numOfRecs++;
             repaint();
