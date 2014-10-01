@@ -6,8 +6,6 @@
 
 package graph;
 
-import java.awt.Rectangle;
-
 /**
  *
  * @author immanuel.rhesa
@@ -21,7 +19,7 @@ public class Edge {
         this.r2 = r2;
     }
     
-   // public boolean contains(int r){
-   //     return (this.r1.equals(r) || this.r2.equals(r));
-   // }
+    public boolean contains(int r){
+        return (this.r1 == r || this.r2 == r);
+    }
 }

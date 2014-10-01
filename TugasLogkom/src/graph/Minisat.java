@@ -28,7 +28,21 @@ public class Minisat {
         this.cnf = cnf;
         clauses = cnf.makeCNF();
     }
-    public int[] solve() throws ContradictionException, TimeoutException{
+    
+    public void addClause(int[] clause){
+        clauses.add(clause);
+    }
+    
+    public int[] negated(int[] clause){
+        int[] newClause = new int[clause.length];
+        
+        for (int i = 0; i < clause.length; i++){
+            newClause[i] = clause[i] * -1;
+        }
+        return newClause;
+    }
+    
+    public int[] solve() throws ContradictionException, TimeoutException, Exception{
         final int MAXVAR = 10000;
         final int MAXCLAUSES = clauses.size();
         int[] value = {};
@@ -50,7 +64,7 @@ public class Minisat {
             System.out.println(result);
         }
         else{
-            System.out.println("gagal");
+            throw new Exception("This problem is unsolvable.");
         }
         return value;
     }

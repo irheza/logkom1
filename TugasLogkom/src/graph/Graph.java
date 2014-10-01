@@ -6,7 +6,6 @@
 
 package graph;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
@@ -40,15 +39,17 @@ public class Graph {
     }
     
     /**
-     * Remove an edge that contains rectangle r from the graph
-     * @param r the rectangle
+     * Contains an edge that contains rectangle n from the graph
+     * @param n
+     * @return 
      */
-    //public void remove(Rectangle r){
-    //    for (Edge e : edgeList){
-    //        if (e.contains(r)){
-    //            edgeList.remove(e);
-    //        }
-    //    }
-   // }
+    public boolean contains(int n){
+        for (Edge e : edgeList){
+            if (e.contains(n)){
+                return true;
+            }
+        }
+        return false;
+    }
     
 }
