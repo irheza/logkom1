@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/V%20Anugrah/Documents/GitHub/logkom1/TugasLogkom/src/gui/MainGUI.java</file>
-            <file>file:/C:/Users/V%20Anugrah/Documents/GitHub/logkom1/TugasLogkom/src/graph/Minisat.java</file>
-            <file>file:/C:/Users/V%20Anugrah/Documents/GitHub/logkom1/TugasLogkom/src/Runner.java</file>
+            <file>file:/C:/Users/Rhesa/Documents/NetBeansProjects/logkom1/logkom1/TugasLogkom/src/CobaMinisat.java</file>
+            <file>file:/C:/Users/Rhesa/Documents/NetBeansProjects/logkom1/logkom1/TugasLogkom/src/gui/MainGUI.java</file>
+            <file>file:/C:/Users/Rhesa/Documents/NetBeansProjects/logkom1/logkom1/TugasLogkom/src/Runner.java</file>
+            <file>file:/C:/Users/Rhesa/Documents/NetBeansProjects/logkom1/logkom1/TugasLogkom/src/graph/Minisat.java</file>
+            <file>file:/C:/Users/Rhesa/Documents/NetBeansProjects/logkom1/logkom1/TugasLogkom/src/MinisatCMD.java</file>
         </group>
     </open-files>
 </project-private>
