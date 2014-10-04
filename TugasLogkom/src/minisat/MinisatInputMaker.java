@@ -20,6 +20,12 @@ import java.util.ArrayList;
  * @author Rhesa
  */
 public class MinisatInputMaker {
+    /**
+     * Menghasilkan string format MINISAT untuk ditulis ke file
+     * @param input list of clause
+     * @param jumlahvariabel jumlah variabel
+     * @return 
+     */
     public String createInput(ArrayList<int[]> input, int jumlahvariabel)
     {
         
@@ -35,9 +41,14 @@ public class MinisatInputMaker {
          }
          return msinput;
     }
+    /**
+     * Menulis input string ke file
+     * @param minisatinput string yang ditulis ke file
+     * @throws IOException 
+     */
     public void writeMinisatInput(String minisatinput) throws IOException
     {
-         File file = new File("D:/tes1.cnf");
+         File file = new File("X:/tes1.cnf");
          if(!file.exists())
         {
             file.createNewFile();
@@ -47,24 +58,34 @@ public class MinisatInputMaker {
         bw.write(minisatinput);
         bw.close();
     }
+    /**
+     * Jalankan proses minisat dan tulis ke file out1.out
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     public void runMinisat() throws IOException, InterruptedException
     {
         Runtime rt = Runtime.getRuntime();
-        File filetemp = new File("D:/out1.out");
+        File filetemp = new File("X:/out1.out");
         if(filetemp.exists())
         {
             filetemp.delete();
             
         }
-        Process proc = rt.exec("minisat D:/tes1.cnf D:/out1.out");
+        Process proc = rt.exec("minisat X:/tes1.cnf X:/out1.out");
         proc.waitFor();
         
     }
     
-    
+    /**
+     * Cek apakah problem CNF bersifat SAT atau UNSAT
+     * @return false jika UNSAT, true otherwise
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public boolean checkSAT() throws FileNotFoundException, IOException
     {
-        BufferedReader reader = new BufferedReader(new FileReader("D:/out1.out"));
+        BufferedReader reader = new BufferedReader(new FileReader("X:/out1.out"));
         String line = reader.readLine();
         if(line.trim().equalsIgnoreCase("unsat"))
         {
@@ -75,13 +96,18 @@ public class MinisatInputMaker {
             return true;
         }
     }
+    /**
+     * Ambil hasil minisat dari string
+     * @return array of integer hasil minisat
+     * @throws IOException 
+     */
     public int[] hasilMinisat() throws IOException
     {
         ArrayList<Integer> tmp = new ArrayList<Integer>();
 
         if(checkSAT())
         {
-           BufferedReader readerlagi = new BufferedReader(new FileReader("D:/out1.out"));
+           BufferedReader readerlagi = new BufferedReader(new FileReader("X:/out1.out"));
            String sat =  readerlagi.readLine();
            String[] hasilsplit = readerlagi.readLine().split("\\s");
            for(int i=0; i<hasilsplit.length;i++)
@@ -98,14 +124,21 @@ public class MinisatInputMaker {
 
     }
     
+    /**
+     * Diberikan input array list of array integer dan jumlah variabel, 
+     * mengembalikan jawaban
+     * @param input array list of array yang berisi clause2
+     * @param banyakvariabel banyak variabel yang dipakai
+     * @return solusi dari CNF
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     public int[] runAllMinisat(ArrayList<int[]> input, int banyakvariabel) throws IOException, InterruptedException
     {
         String cnf = createInput(input,banyakvariabel);
         writeMinisatInput(cnf);
         runMinisat();
         int[] hasil = hasilMinisat();
-        return hasil;
-        
+        return hasil;       
     }
-    
 }

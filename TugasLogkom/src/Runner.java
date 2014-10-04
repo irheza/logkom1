@@ -1,10 +1,8 @@
 
 import gui.MainGUI;
-import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.TimeoutException;
 

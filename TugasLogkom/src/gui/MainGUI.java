@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import minisat.MinisatInputMaker;
 
 public class MainGUI extends JPanel implements MouseMotionListener {
 
@@ -28,7 +27,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     private int currentSquareIndex = -1;
     private boolean addRecStatus = true;
     private Graph graph = new Graph();
-    
+
     private boolean isColored = false;
     private boolean isRectangle = false;
     private int[] listColor = {};
@@ -37,51 +36,57 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     public MainGUI() {
         JPanel topButtonPanel = new JPanel();
         JPanel bottomButtonPanel = new JPanel();
-        
+
         this.setLayout(new BorderLayout());
-        topButtonPanel.setLayout(new GridLayout(1,6));
-        bottomButtonPanel.setLayout(new GridLayout(1,5));
-        
+        topButtonPanel.setLayout(new GridLayout(1, 6));
+        bottomButtonPanel.setLayout(new GridLayout(1, 5));
+
         JButton ok = new JButton("OK");
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addRecStatus = false;
+                
+                // no idea
+                class Map{
+                    int key, value;
+                    public Map(int x, int y){
+                        this.key = x;
+                        this.value = y;
+                    }
+                }
+                
+                ArrayList<Map> nempel = new ArrayList<Map>();
+                int idx = 1;
                 for (int i = 0; i < numOfRecs; i++) {
                     for (int j = i + 1; j < numOfRecs; j++) {
                         if (rect[i].intersects(rect[j])) {
-                            graph.addRect(i+1, j+1);
-                            System.out.println((i+1) + " dengan " + (j+1));
+//                            Map map1 = new Map(i+1, idx);
+//                            Map map2 = new Map(j+1, idx+1);
+//                            idx+= 2;
+                            graph.addRect(i + 1, j + 1);
+                            System.out.println((i + 1) + " dengan " + (j + 1));
+//                            System.out.println("map: ");
                         }
                     }
                 }
-                CNFMaker cnf = new CNFMaker(graph,graph.getJumlahVariabel());
-                System.out.println("jumlah variabel :"+graph.getJumlahVariabel());
-                ArrayList<int[]> tmp = cnf.makeCNF();
-                for (int i = 0; i < tmp.size(); i++) {
-                    int[] hasil = tmp.get(i);
-                    System.out.print("{ ");
-                    for (int j = 0; j < hasil.length; j++) {
-                        System.out.print(hasil[j] + " ");
-                    }
-                    System.out.println(" }");
-                }
+                
+                CNFMaker cnf = new CNFMaker(graph, graph.getJumlahVariabel());
+                System.out.println("jumlah variabel :" + graph.getJumlahVariabel());
+//                ArrayList<int[]> tmp = cnf.makeCNF();
+//                for (int i = 0; i < tmp.size(); i++) {
+//                    int[] hasil = tmp.get(i);
+//                    System.out.print("{ ");
+//                    for (int j = 0; j < hasil.length; j++) {
+//                        System.out.print(hasil[j] + " ");
+//                    }
+//                    System.out.println(" }");
+//                }
                 m = new Minisat(cnf);
                 try {
-                    int[] listColorTmp = m.solve();
-                    ArrayList<Integer> unik = new ArrayList<Integer>();
-                    System.out.println("warnanya adalah");
-                    for(int i=0; i<listColorTmp.length;i++)
-                    {
-                            System.out.println(listColorTmp[i]);
-                            unik.add(listColorTmp[i]);
-                        
-                    }
-                    listColor = new int[unik.size()];
-                    for(int i=0;i<unik.size();i++)
-                    {
-                        listColor[i]=unik.get(i);
-                    }
+                    // get solution
+                    listColor = m.solve();                    
+                    
                     isColored = true;
                     repaint();
                 } catch (Exception ex) {
@@ -89,69 +94,69 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 }
             }
         });
-        
+
         JButton restart = new JButton("Restart");
         JButton show = new JButton("Show other solution");
-        
-        restart.addActionListener(new ActionListener(){
+
+        restart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 reset();
             }
         });
-        
+
         // coba ganti warna
-        show.addActionListener(new ActionListener(){
+        show.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (m != null && isColored){
+                if (m != null && isColored) {
                     try {
                         // masukkan daftar warna yang boleh
                         int[] newClause = m.negated(listColor);
                         m.addClause(newClause);
                         listColor = m.solve();
                         repaint();
-                    } catch(Exception ex) {
+                    } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage(), "Unsolvable", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
         });
-        
+
         topButtonPanel.add(new JPanel());
         topButtonPanel.add(new JPanel());
         topButtonPanel.add(ok);
         topButtonPanel.add(restart);
         topButtonPanel.add(new JPanel());
         topButtonPanel.add(new JPanel());
-        
+
         bottomButtonPanel.add(new JPanel());
         bottomButtonPanel.add(new JPanel());
         bottomButtonPanel.add(show);
         bottomButtonPanel.add(new JPanel());
         bottomButtonPanel.add(new JPanel());
-        
+
         JPanel westBP = new JPanel();
-        westBP.setLayout(new GridLayout(8,1));
+        westBP.setLayout(new GridLayout(8, 1));
         JButton recButton = new JButton("Rectangle");
         JButton squareButton = new JButton("Square");
-        
-        recButton.addActionListener(new ActionListener(){
+
+        recButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isRectangle = true;
             }
         });
-        squareButton.addActionListener(new ActionListener(){
+        squareButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isRectangle = false;
             }
         });
-        
+
         westBP.add(recButton);
         westBP.add(squareButton);
-        
+
         this.add(topButtonPanel, BorderLayout.NORTH);
         this.add(bottomButtonPanel, BorderLayout.SOUTH);
         this.add(westBP, BorderLayout.WEST);
@@ -183,40 +188,42 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         });
         addMouseMotionListener(this);
     }
-    
-    public void reset(){
+
+    /**
+     * Mengembalikan MainGUI seperti semula (kosong)
+     */
+    public void reset() {
         rect = new Rectangle[MAX];
         numOfRecs = 0;
         currentSquareIndex = -1;
         addRecStatus = true;
         graph = new Graph();
-    
+
         isColored = false;
         listColor = new int[1];
         repaint();
     }
-    
+
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);                        
-        for (int i = 0, j = 0; i < numOfRecs; i++) {            
+        super.paintComponent(g);
+        for (int i = 0, j = 0; i < numOfRecs; i++) {
             Graphics2D g2 = ((Graphics2D) g);
             Color c = Color.black;
             g2.setColor(c);
             g2.draw(rect[i]);
-            
+
             // decode color
-            if (isColored){
+            if (isColored) {
                 // if graph contains i+1 karena index graph one-based
-                if (graph.contains(i+1)){
-                    System.out.println("rectangle " + (i+1) + " diwarnain");
-                    EncodedColor e = new EncodedColor(listColor[j], listColor[j+1]);
+                if (graph.contains(i + 1)) {                    
+                    EncodedColor e = new EncodedColor(listColor[j], listColor[j + 1]);
+                    System.out.println("rectangle " + (i + 1) + " diwarnain " + e.toString());
                     c = e.getColor();
                     g2.setColor(c);
                     g2.fill(rect[i]);
-                    j += 2;    
-                }
-                else{
+                    j += 2;
+                } else {
                     c = Color.red;
                     g2.setColor(c);
                     g2.fill(rect[i]);
@@ -236,12 +243,11 @@ public class MainGUI extends JPanel implements MouseMotionListener {
 
     public void add(int x, int y) {
         if (numOfRecs < MAX) {
-            if (isRectangle){
+            if (isRectangle) {
                 rect[numOfRecs] = new Rectangle(x, y, 100, recW);
-            }
-            else{
+            } else {
                 rect[numOfRecs] = new Rectangle(x, y, recW, recW);
-            }            
+            }
             currentSquareIndex = numOfRecs;
             numOfRecs++;
             repaint();

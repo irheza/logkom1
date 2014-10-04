@@ -38,4 +38,23 @@ public class EncodedColor {
             return Color.BLUE;
         }
     }
+    @Override
+    public String toString(){
+                // 00 untuk merah
+        if (bit0 < 0 && bit1 < 0){
+            return "merah";
+        }
+        // 01 untuk kuning
+        else if (bit0 < 0 && bit1 > 0){
+            return "kuning";
+        }
+        // 10 untuk hijau
+        else if (bit0 > 0 && bit1 > 0){
+            return "hijau";
+        }
+        // 11 untuk biru
+        else{
+            return "biru";
+        }
+    }
 }
