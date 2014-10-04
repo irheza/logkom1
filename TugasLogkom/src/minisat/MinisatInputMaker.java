@@ -60,6 +60,8 @@ public class MinisatInputMaker {
         proc.waitFor();
         
     }
+    
+    
     public boolean checkSAT() throws FileNotFoundException, IOException
     {
         BufferedReader reader = new BufferedReader(new FileReader("D:/out1.out"));
@@ -94,6 +96,16 @@ public class MinisatInputMaker {
         }
         return hasil;
 
+    }
+    
+    public int[] runAllMinisat(ArrayList<int[]> input, int banyakvariabel) throws IOException, InterruptedException
+    {
+        String cnf = createInput(input,banyakvariabel);
+        writeMinisatInput(cnf);
+        runMinisat();
+        int[] hasil = hasilMinisat();
+        return hasil;
+        
     }
     
 }

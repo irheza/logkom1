@@ -33,12 +33,12 @@ public class MinisatCMD {
          CNF.add(b);
          CNF.add(c);
          MinisatInputMaker maker = new MinisatInputMaker();
-         String inpu = maker.createInput(CNF, 5);
-         maker.writeMinisatInput(inpu);
-         maker.runMinisat();
+         //String inpu = maker.createInput(CNF, 5);
+         //maker.writeMinisatInput(inpu);
+         //maker.runMinisat();
          
-         System.out.println(maker.checkSAT());
-         int[] hasil = maker.hasilMinisat();
+         //System.out.println(maker.checkSAT());
+         int[] hasil = maker.runAllMinisat(CNF, 5);
          for(int i=0;i<hasil.length;i++)
          {
              System.out.println(hasil[i]);
