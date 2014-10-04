@@ -71,6 +71,10 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 try {
                     // get solution
                     listColor = m.solve();
+                    for(int i=0; i<listColor.length;i++)
+                    {
+                        System.out.println(listColor[i]);
+                    }
                     isColored = true;
                     repaint();
                 } catch (Exception ex) {

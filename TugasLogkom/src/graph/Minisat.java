@@ -37,10 +37,12 @@ public class Minisat {
     }
     
     public int[] negated(int[] clause){
-        int[] newClause = new int[clause.length];
+        int[] newClause = new int[clause.length-1];
         
-        for (int i = 0; i < clause.length; i++){
-            newClause[i] = clause[i] * -1;
+        for (int i = 0; i < clause.length-1; i++){
+           
+                newClause[i] = clause[i] * -1;
+            
         }
         return newClause;
     }
@@ -70,6 +72,15 @@ public class Minisat {
 //            throw new Exception("This problem is unsolvable.");
 //        }
           MinisatInputMaker minisat = new MinisatInputMaker();
+          System.out.println("Isi clauses:");
+          for(int i=0; i<clauses.size();i++)
+          {
+              for(int j=0; j<clauses.get(i).length;j++)
+              {
+                  System.out.print(clauses.get(i)[j]+" ");
+              }
+              System.out.println("");
+          }
           int[]value = minisat.runAllMinisat(clauses, cnf.getJumlahVariabel());
           if(value.length<=0)
           {

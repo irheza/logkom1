@@ -48,7 +48,7 @@ public class MinisatInputMaker {
      */
     public void writeMinisatInput(String minisatinput) throws IOException
     {
-         File file = new File("X:/tes1.cnf");
+         File file = new File("D:/tes1.cnf");
          if(!file.exists())
         {
             file.createNewFile();
@@ -66,13 +66,13 @@ public class MinisatInputMaker {
     public void runMinisat() throws IOException, InterruptedException
     {
         Runtime rt = Runtime.getRuntime();
-        File filetemp = new File("X:/out1.out");
+        File filetemp = new File("D:/out1.out");
         if(filetemp.exists())
         {
             filetemp.delete();
             
         }
-        Process proc = rt.exec("minisat X:/tes1.cnf X:/out1.out");
+        Process proc = rt.exec("minisat D:/tes1.cnf D:/out1.out");
         proc.waitFor();
         
     }
@@ -85,8 +85,9 @@ public class MinisatInputMaker {
      */
     public boolean checkSAT() throws FileNotFoundException, IOException
     {
-        BufferedReader reader = new BufferedReader(new FileReader("X:/out1.out"));
+        BufferedReader reader = new BufferedReader(new FileReader("D:/out1.out"));
         String line = reader.readLine();
+         reader.close();
         if(line.trim().equalsIgnoreCase("unsat"))
         {
             return false;
@@ -95,6 +96,7 @@ public class MinisatInputMaker {
         {
             return true;
         }
+       
     }
     /**
      * Ambil hasil minisat dari string
@@ -107,13 +109,14 @@ public class MinisatInputMaker {
 
         if(checkSAT())
         {
-           BufferedReader readerlagi = new BufferedReader(new FileReader("X:/out1.out"));
+           BufferedReader readerlagi = new BufferedReader(new FileReader("D:/out1.out"));
            String sat =  readerlagi.readLine();
            String[] hasilsplit = readerlagi.readLine().split("\\s");
            for(int i=0; i<hasilsplit.length;i++)
            {
                tmp.add(Integer.parseInt(hasilsplit[i]));
            }
+           readerlagi.close();
         }
         int[] hasil = new int[tmp.size()];
         for(int i=0;i<tmp.size();i++)
