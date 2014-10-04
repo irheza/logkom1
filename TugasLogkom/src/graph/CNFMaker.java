@@ -6,6 +6,10 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -28,24 +32,32 @@ public class CNFMaker {
     public ArrayList<int[]> makeCNF() {
         ArrayList<Edge> terhubung = graph.getEdgeList();
         ArrayList<int[]> tmp = new ArrayList<int[]>();
-        int var = 1; 
-        int a0 = var++;
-        int a1 = var++;
-        int b0 = var++;
-        int b1 = var++;
-        System.out.println("terhubung: " + terhubung.size());
-        for (int i = 0; i < terhubung.size(); i++) {
-//            int a = terhubung.get(i).r1;
-//            int b = terhubung.get(i).r2;
 
-//            String a0s= ""+a+"0";
-//            int a0 = Integer.parseInt(a0s);
-//            String a1s= ""+a+"1";
-//            int a1 = Integer.parseInt(a1s);
-//            String b0s= ""+b+"0";
-//            int b0 = Integer.parseInt(b0s);
-//            String b1s= ""+b+"1";
-//            int b1 = Integer.parseInt(b1s);
+        Set<Integer> set = new TreeSet<>();
+
+        for (Edge e : terhubung) {
+            set.add(e.r1);
+            set.add(e.r2);
+        }
+        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Iterator it = set.iterator();
+
+        for (int k = 0; it.hasNext(); k++) {
+            int key = (Integer) it.next();
+            hm.put(key, k);
+            System.out.println("Key: " + key + " value: " + k);
+        }
+
+        for (int i = 0; i < terhubung.size(); i++) {
+            int a = terhubung.get(i).r1;
+            int b = terhubung.get(i).r2;
+            
+            int a0 = 2*hm.get(a)+1;
+            int a1 = a0+1;
+            int b0 = 2*hm.get(b)+1;
+            int b1 = b0+1;
+            
+            System.out.println("a0 a1 b0 b1 = " + a0 + " " + a1 + " " + b0 + " "+ b1);
 
             int[] clause1 = {-a0, -b0, -a1, -b1};
             int[] clause2 = {-a0, -b0, a1, b1};

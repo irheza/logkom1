@@ -46,27 +46,12 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addRecStatus = false;
-                
-                // no idea
-                class Map{
-                    int key, value;
-                    public Map(int x, int y){
-                        this.key = x;
-                        this.value = y;
-                    }
-                }
-                
-                ArrayList<Map> nempel = new ArrayList<Map>();
-                int idx = 1;
+                              
                 for (int i = 0; i < numOfRecs; i++) {
                     for (int j = i + 1; j < numOfRecs; j++) {
                         if (rect[i].intersects(rect[j])) {
-//                            Map map1 = new Map(i+1, idx);
-//                            Map map2 = new Map(j+1, idx+1);
-//                            idx+= 2;
                             graph.addRect(i + 1, j + 1);
                             System.out.println((i + 1) + " dengan " + (j + 1));
-//                            System.out.println("map: ");
                         }
                     }
                 }
@@ -85,8 +70,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 m = new Minisat(cnf);
                 try {
                     // get solution
-                    listColor = m.solve();                    
-                    
+                    listColor = m.solve();
                     isColored = true;
                     repaint();
                 } catch (Exception ex) {
