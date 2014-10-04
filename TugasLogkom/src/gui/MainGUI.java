@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import minisat.MinisatInputMaker;
 
 public class MainGUI extends JPanel implements MouseMotionListener {
 
@@ -54,7 +55,8 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                         }
                     }
                 }
-                CNFMaker cnf = new CNFMaker(graph);
+                CNFMaker cnf = new CNFMaker(graph,graph.getJumlahVariabel());
+                System.out.println("jumlah variabel :"+graph.getJumlahVariabel());
                 ArrayList<int[]> tmp = cnf.makeCNF();
                 for (int i = 0; i < tmp.size(); i++) {
                     int[] hasil = tmp.get(i);
@@ -66,7 +68,20 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 }
                 m = new Minisat(cnf);
                 try {
-                    listColor = m.solve();
+                    int[] listColorTmp = m.solve();
+                    ArrayList<Integer> unik = new ArrayList<Integer>();
+                    System.out.println("warnanya adalah");
+                    for(int i=0; i<listColorTmp.length;i++)
+                    {
+                            System.out.println(listColorTmp[i]);
+                            unik.add(listColorTmp[i]);
+                        
+                    }
+                    listColor = new int[unik.size()];
+                    for(int i=0;i<unik.size();i++)
+                    {
+                        listColor[i]=unik.get(i);
+                    }
                     isColored = true;
                     repaint();
                 } catch (Exception ex) {

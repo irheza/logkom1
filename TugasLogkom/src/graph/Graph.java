@@ -52,4 +52,25 @@ public class Graph {
         return false;
     }
     
+    public int getJumlahVariabel()
+    {
+        int jumlah=0;
+        ArrayList<Integer> unik = new ArrayList<Integer>();
+        for(int i=0;i<edgeList.size();i++)
+        {
+            if(!unik.contains(edgeList.get(i).r1))
+            {
+                unik.add(edgeList.get(i).r1);
+                jumlah++;
+            }
+            
+            if(!unik.contains(edgeList.get(i).r2))
+            {
+                unik.add(edgeList.get(i).r2);
+                jumlah++;
+            }
+        }
+        return jumlah;
+    }
+    
 }

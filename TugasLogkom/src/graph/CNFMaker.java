@@ -14,9 +14,15 @@ import java.util.ArrayList;
  */
 public class CNFMaker {
     Graph graph;
-    public CNFMaker(Graph graph)
+    int jumlahvariabel;
+    public CNFMaker(Graph graph, int jumlahvariabel)
     {
         this.graph = graph;
+        this.jumlahvariabel = jumlahvariabel;
+    }
+    public int getJumlahVariabel()
+    {
+        return jumlahvariabel;
     }
     public ArrayList<int[]> makeCNF()
     {
