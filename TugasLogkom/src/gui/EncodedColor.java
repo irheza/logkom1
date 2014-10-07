@@ -30,7 +30,7 @@ public class EncodedColor {
             return Color.YELLOW;
         }
         // 10 untuk hijau
-        else if (bit0 > 0 && bit1 > 0){
+        else if (bit0 > 0 && bit1 < 0){
             return Color.GREEN;
         }
         // 11 untuk biru
@@ -40,7 +40,7 @@ public class EncodedColor {
     }
     @Override
     public String toString(){
-                // 00 untuk merah
+        // 00 untuk merah
         if (bit0 < 0 && bit1 < 0){
             return "merah";
         }
@@ -49,7 +49,7 @@ public class EncodedColor {
             return "kuning";
         }
         // 10 untuk hijau
-        else if (bit0 > 0 && bit1 > 0){
+        else if (bit0 > 0 && bit1 < 0){
             return "hijau";
         }
         // 11 untuk biru

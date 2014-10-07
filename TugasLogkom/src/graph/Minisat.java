@@ -23,7 +23,6 @@ public class Minisat {
     public Minisat(CNFMaker cnf){
         this.cnf = cnf;
         clauses = cnf.makeCNF();
-       
     }
     
     public void addClause(int[] clause){

@@ -7,6 +7,9 @@ package graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -30,28 +33,28 @@ public class CNFMaker {
         ArrayList<Edge> terhubung = graph.getEdgeList();
         ArrayList<int[]> tmp = new ArrayList<int[]>();
         HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        Set<Integer> set = new TreeSet<>();
+
+        for (Edge e : terhubung) {
+            set.add(e.r1);
+            set.add(e.r2);
+        }
         
-        // masukkan ke hash map
-        for (int j = 0; j < terhubung.size(); j++){
-            int k1 = terhubung.get(j).r1;
-            int k2 = terhubung.get(j).r2;
-            if (!hm.containsKey(k1)){
-                hm.put(k1, j);
-            }
-            else if (!hm.containsKey(k2)){
-                hm.put(k2, j);
-            }
+        Iterator it = set.iterator();
+
+        for (int k = 0; it.hasNext(); k++) {
+            int key = (Integer) it.next();
+            hm.put(key, k);
+            System.out.println("Key: " + key + " value: " + k);
         }
 
-        for (int i = 0; i < terhubung.size(); i++) {
+        for (int i = 0; i < terhubung.size(); i++) {            
             int a = terhubung.get(i).r1;
             int b = terhubung.get(i).r2;
-            
             int a0 = 2*hm.get(a)+1;
             int a1 = a0+1;
             int b0 = 2*hm.get(b)+1;
             int b1 = b0+1;
-//            System.out.println("a0 a1 b0 b1 = " + a0 + " " + a1 + " " + b0 + " "+ b1);
 
             int[] clause1 = {-a0, -b0, -a1, -b1};
             int[] clause2 = {-a0, -b0, a1, b1};

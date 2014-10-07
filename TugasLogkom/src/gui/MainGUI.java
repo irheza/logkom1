@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -31,6 +32,8 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     private boolean isRectangle = false;
     private int[] listColor = {};
     private Minisat m = null;
+    
+    private JLabel text;
 
     public MainGUI() {
         JPanel topButtonPanel = new JPanel();
@@ -57,16 +60,8 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 
                 CNFMaker cnf = new CNFMaker(graph, graph.getJumlahVariabel());
                 System.out.println("jumlah variabel :" + graph.getJumlahVariabel());
-//                ArrayList<int[]> tmp = cnf.makeCNF();
-//                for (int i = 0; i < tmp.size(); i++) {
-//                    int[] hasil = tmp.get(i);
-//                    System.out.print("{ ");
-//                    for (int j = 0; j < hasil.length; j++) {
-//                        System.out.print(hasil[j] + " ");
-//                    }
-//                    System.out.println(" }");
-//                }
                 m = new Minisat(cnf);
+                                
                 try {
                     // get solution
                     listColor = m.solve();
@@ -104,12 +99,19 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                         listColor = m.solve();
                         repaint();
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Unsolvable", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "All configurations for the connected map have been shown.", "No more solution", JOptionPane.WARNING_MESSAGE);
                     }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Please draw a map first.", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
 
+        JPanel south = new JPanel();
+        text = new JLabel("label");
+        
+        
         topButtonPanel.add(new JPanel());
         topButtonPanel.add(new JPanel());
         topButtonPanel.add(ok);
@@ -123,6 +125,10 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         bottomButtonPanel.add(new JPanel());
         bottomButtonPanel.add(new JPanel());
 
+        south.setLayout(new GridLayout(2, 1));
+        south.add(text);
+        south.add(bottomButtonPanel);
+        
         JPanel westBP = new JPanel();
         westBP.setLayout(new GridLayout(8, 1));
         JButton recButton = new JButton("Rectangle");
@@ -132,12 +138,14 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isRectangle = true;
+                text.setText("rectangle");
             }
         });
         squareButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isRectangle = false;
+                text.setText("square");
             }
         });
 
@@ -145,7 +153,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         westBP.add(squareButton);
 
         this.add(topButtonPanel, BorderLayout.NORTH);
-        this.add(bottomButtonPanel, BorderLayout.SOUTH);
+        this.add(south, BorderLayout.SOUTH);
         this.add(westBP, BorderLayout.WEST);
         this.add(new JPanel(), BorderLayout.EAST);
         this.setBackground(Color.white);
@@ -159,6 +167,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                     currentSquareIndex = getRec(x, y);
                     if (currentSquareIndex < 0 && addRecStatus) // not inside a square
                     {
+                        text.setText("add a shape");
                         add(x, y);
                     }
                 }
@@ -170,6 +179,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 int y = evt.getY();
                 if (evt.getClickCount() >= 2) {
                     remove(currentSquareIndex);
+                    text.setText("remove a shape");
                 }
             }
         });
@@ -188,6 +198,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
 
         isColored = false;
         listColor = new int[1];
+        text.setText("");
         repaint();
     }
 
@@ -211,7 +222,16 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                     g2.fill(rect[i]);
                     j += 2;
                 } else {
-                    c = Color.red;
+                    double rand = Math.random();
+                    int bit0 = rand < 0.5 ? -1 : 1;
+//                    System.out.println(rand);
+                    rand = Math.random();
+//                    System.out.println(rand);
+                    int bit1 = rand < 0.5 ? -1 : 1;
+                    
+                    EncodedColor e = new EncodedColor(bit0, bit1);
+//                    System.out.println("warnanya: " + bit0 + bit1);
+                    c = e.getColor();
                     g2.setColor(c);
                     g2.fill(rect[i]);
                 }
