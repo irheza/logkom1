@@ -1,6 +1,8 @@
 package gui;
 
-import graph.*;
+import logic.Graph;
+import logic.CNFMaker;
+import logic.Minisat;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;

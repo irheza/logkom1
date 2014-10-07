@@ -1,6 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import minisat.MinisatInputMaker;
+import logic.MinisatInputMaker;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
