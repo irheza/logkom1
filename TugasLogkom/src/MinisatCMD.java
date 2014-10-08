@@ -15,7 +15,7 @@ import logic.MinisatInputMaker;
 public class MinisatCMD {
     public static void main(String[]args) throws IOException, InterruptedException
     {
-       
+      
          ArrayList<int[]> CNF = new ArrayList<int[]>();
   
          int[] a = {1,-5,4};

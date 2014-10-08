@@ -6,6 +6,7 @@
 
 package logic;
 
+import main.Runner;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -48,7 +49,7 @@ public class MinisatInputMaker {
      */
     public void writeMinisatInput(String minisatinput) throws IOException
     {
-         File file = new File("D:/tes1.cnf");
+         File file = new File(Runner.pilihan+"/tes1.cnf");
          if(!file.exists())
         {
             file.createNewFile();
@@ -66,13 +67,13 @@ public class MinisatInputMaker {
     public void runMinisat() throws IOException, InterruptedException
     {
         Runtime rt = Runtime.getRuntime();
-        File filetemp = new File("D:/out1.out");
+        File filetemp = new File(Runner.pilihan+"/out1.out");
         if(filetemp.exists())
         {
             filetemp.delete();
             
         }
-        Process proc = rt.exec("minisat D:/tes1.cnf D:/out1.out");
+        Process proc = rt.exec("minisat "+Runner.pilihan+"/tes1.cnf "+Runner.pilihan+"/out1.out");
         proc.waitFor();
         
     }
@@ -85,7 +86,7 @@ public class MinisatInputMaker {
      */
     public boolean checkSAT() throws FileNotFoundException, IOException
     {
-        BufferedReader reader = new BufferedReader(new FileReader("D:/out1.out"));
+        BufferedReader reader = new BufferedReader(new FileReader(Runner.pilihan+"/out1.out"));
         String line = reader.readLine();
          reader.close();
         if(line.trim().equalsIgnoreCase("unsat"))
@@ -109,7 +110,7 @@ public class MinisatInputMaker {
 
         if(checkSAT())
         {
-           BufferedReader reader = new BufferedReader(new FileReader("D:/out1.out"));
+           BufferedReader reader = new BufferedReader(new FileReader(Runner.pilihan+"/out1.out"));
            String SatOrUnsat =  reader.readLine();
            String[] hasilsplit = reader.readLine().split("\\s");
            for(int i=0; i<hasilsplit.length;i++)
@@ -130,7 +131,7 @@ public class MinisatInputMaker {
     /**
      * Diberikan input array list of array integer dan jumlah variabel, 
      * mengembalikan jawaban
-     * @param input array list of array yang berisi clause2
+     * @param listClause array list of array yang berisi clause2
      * @param banyakvariabel banyak variabel yang dipakai
      * @return solusi dari CNF
      * @throws IOException
@@ -148,7 +149,8 @@ public class MinisatInputMaker {
         }
         else
         {
-            hasil = new int[0];
+            hasil = new int[]{0};
+          
         }
         return hasil;       
     }
