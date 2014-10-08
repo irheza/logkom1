@@ -1,8 +1,5 @@
 package gui;
 
-import logic.Graph;
-import logic.CNFMaker;
-import logic.Minisat;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -19,6 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import logic.CNFMaker;
+import logic.Graph;
+import logic.Minisat;
 
 public class MainGUI extends JPanel implements MouseMotionListener {
 
@@ -34,12 +35,23 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     private boolean isRectangle = false;
     private int[] listColor = {};
     private Minisat m = null;
-    
+
     private JLabel text;
+    private JTextField widthField;
+    private JTextField heightField;
+    
+    private int width;
+    private int height;
 
     public MainGUI() {
         JPanel topButtonPanel = new JPanel();
         JPanel bottomButtonPanel = new JPanel();
+        
+        widthField = new JTextField("" + recW);
+        heightField = new JTextField("" + recW);
+        
+        width = recW;
+        height = recW;
 
         this.setLayout(new BorderLayout());
         topButtonPanel.setLayout(new GridLayout(1, 6));
@@ -50,7 +62,9 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addRecStatus = false;
-                              
+                isColored = true;
+                System.out.println("true");
+
                 for (int i = 0; i < numOfRecs; i++) {
                     for (int j = i + 1; j < numOfRecs; j++) {
                         if (rect[i].intersects(rect[j])) {
@@ -60,22 +74,25 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                     }
                 }
                 
-                CNFMaker cnf = new CNFMaker(graph, graph.getJumlahVariabel());
-                System.out.println("jumlah variabel :" + graph.getJumlahVariabel());
-                m = new Minisat(cnf);
-                                
-                try {
+                if (!graph.getEdgeList().isEmpty()) {
+                    CNFMaker cnf = new CNFMaker(graph, graph.getJumlahVariabel());
+                    System.out.println("jumlah variabel :" + graph.getJumlahVariabel());
+                    m = new Minisat(cnf);
+
+                    try {
                     // get solution
-                   
-                    listColor = m.solve();
-                    for(int i=0; i<listColor.length;i++)
-                    {
-                        System.out.println(listColor[i]);
+
+                        listColor = m.solve();
+                        for (int i = 0; i < listColor.length; i++) {
+                            System.out.println(listColor[i]);
+                        }                        
+                        repaint();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Unsolvable", JOptionPane.WARNING_MESSAGE);
                     }
-                    isColored = true;
+                }
+                else{
                     repaint();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Unsolvable", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -94,6 +111,10 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         show.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (graph.getEdgeList().isEmpty()){
+                    repaint();
+                    return;
+                }
                 if (m != null && isColored) {
                     try {
                         // masukkan daftar warna yang boleh
@@ -104,8 +125,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "All configurations for the connected map have been shown.", "No more solution", JOptionPane.WARNING_MESSAGE);
                     }
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Please draw a map first.", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
             }
@@ -113,10 +133,9 @@ public class MainGUI extends JPanel implements MouseMotionListener {
 
         JPanel south = new JPanel();
         text = new JLabel("label");
-        
-        
-        topButtonPanel.add(new JPanel());
-        topButtonPanel.add(new JPanel());
+
+        topButtonPanel.add(widthField);
+        topButtonPanel.add(heightField);
         topButtonPanel.add(ok);
         topButtonPanel.add(restart);
         topButtonPanel.add(new JPanel());
@@ -131,7 +150,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         south.setLayout(new GridLayout(2, 1));
         south.add(text);
         south.add(bottomButtonPanel);
-        
+
         JPanel westBP = new JPanel();
         westBP.setLayout(new GridLayout(8, 1));
         JButton recButton = new JButton("Rectangle");
@@ -142,6 +161,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             public void actionPerformed(ActionEvent e) {
                 isRectangle = true;
                 text.setText("rectangle");
+                heightField.setEditable(true);
             }
         });
         squareButton.addActionListener(new ActionListener() {
@@ -149,6 +169,8 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             public void actionPerformed(ActionEvent e) {
                 isRectangle = false;
                 text.setText("square");
+                heightField.setText(widthField.getText());
+                heightField.setEditable(false);
             }
         });
 
@@ -217,21 +239,21 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             // decode color
             if (isColored) {
                 // if graph contains i+1 karena index graph one-based
-                if (graph.contains(i + 1)) {                    
+                if (graph.contains(i + 1)) {
                     EncodedColor e = new EncodedColor(listColor[j], listColor[j + 1]);
                     System.out.println("rectangle " + (i + 1) + " diwarnain " + e.toString());
                     c = e.getColor();
                     g2.setColor(c);
                     g2.fill(rect[i]);
                     j += 2;
-                } else {
+                } else if (!graph.contains(i + 1) || graph.getEdgeList().isEmpty()){
                     double rand = Math.random();
                     int bit0 = rand < 0.5 ? -1 : 1;
 //                    System.out.println(rand);
                     rand = Math.random();
 //                    System.out.println(rand);
                     int bit1 = rand < 0.5 ? -1 : 1;
-                    
+
                     EncodedColor e = new EncodedColor(bit0, bit1);
 //                    System.out.println("warnanya: " + bit0 + bit1);
                     c = e.getColor();
