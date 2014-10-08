@@ -20,12 +20,12 @@ import org.sat4j.specs.TimeoutException;
  * @author V Anugrah
  */
 public class Runner {
-    public static String pilihan;
+    public static String drivePilihan;
     public static void main(String[] args) throws ContradictionException, TimeoutException {
         Object[] possibilities = {"D:", "E:", "X:"};
       
         JFrame jFrame = new JFrame();
-        pilihan = (String)JOptionPane.showInputDialog(
+        drivePilihan = (String)JOptionPane.showInputDialog(
                     jFrame,
                     "Pilih lokasi penyimpanan file Minisat:\n",
                     "Customized Dialog",

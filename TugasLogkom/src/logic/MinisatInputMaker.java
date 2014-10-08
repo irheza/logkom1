@@ -49,7 +49,7 @@ public class MinisatInputMaker {
      */
     public void writeMinisatInput(String minisatinput) throws IOException
     {
-         File file = new File(Runner.pilihan+"/tes1.cnf");
+         File file = new File(Runner.drivePilihan+"/tes1.cnf");
          if(!file.exists())
         {
             file.createNewFile();
@@ -67,13 +67,13 @@ public class MinisatInputMaker {
     public void runMinisat() throws IOException, InterruptedException
     {
         Runtime rt = Runtime.getRuntime();
-        File filetemp = new File(Runner.pilihan+"/out1.out");
+        File filetemp = new File(Runner.drivePilihan+"/out1.out");
         if(filetemp.exists())
         {
             filetemp.delete();
             
         }
-        Process proc = rt.exec("minisat "+Runner.pilihan+"/tes1.cnf "+Runner.pilihan+"/out1.out");
+        Process proc = rt.exec("minisat "+Runner.drivePilihan+"/tes1.cnf "+Runner.drivePilihan+"/out1.out");
         proc.waitFor();
         
     }
@@ -86,7 +86,7 @@ public class MinisatInputMaker {
      */
     public boolean checkSAT() throws FileNotFoundException, IOException
     {
-        BufferedReader reader = new BufferedReader(new FileReader(Runner.pilihan+"/out1.out"));
+        BufferedReader reader = new BufferedReader(new FileReader(Runner.drivePilihan+"/out1.out"));
         String line = reader.readLine();
          reader.close();
         if(line.trim().equalsIgnoreCase("unsat"))
@@ -110,7 +110,7 @@ public class MinisatInputMaker {
 
         if(checkSAT())
         {
-           BufferedReader reader = new BufferedReader(new FileReader(Runner.pilihan+"/out1.out"));
+           BufferedReader reader = new BufferedReader(new FileReader(Runner.drivePilihan+"/out1.out"));
            String SatOrUnsat =  reader.readLine();
            String[] hasilsplit = reader.readLine().split("\\s");
            for(int i=0; i<hasilsplit.length;i++)
