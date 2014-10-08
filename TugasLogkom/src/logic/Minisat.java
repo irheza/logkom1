@@ -36,9 +36,9 @@ public class Minisat {
     
     public int[] solve() throws Exception{
           MinisatInputMaker minisat = new MinisatInputMaker();
-
+         
           int[]value = minisat.runAllMinisat(clauses, cnf.getJumlahVariabel());
-          if(value.length<=0)
+          if(!minisat.checkSAT())
           {
               throw new Exception("This problem is unsolvable.");
           }

@@ -48,7 +48,7 @@ public class MinisatInputMaker {
      */
     public void writeMinisatInput(String minisatinput) throws IOException
     {
-         File file = new File("X:/tes1.cnf");
+         File file = new File("D:/tes1.cnf");
          if(!file.exists())
         {
             file.createNewFile();
@@ -66,13 +66,13 @@ public class MinisatInputMaker {
     public void runMinisat() throws IOException, InterruptedException
     {
         Runtime rt = Runtime.getRuntime();
-        File filetemp = new File("X:/out1.out");
+        File filetemp = new File("D:/out1.out");
         if(filetemp.exists())
         {
             filetemp.delete();
             
         }
-        Process proc = rt.exec("minisat X:/tes1.cnf X:/out1.out");
+        Process proc = rt.exec("minisat D:/tes1.cnf D:/out1.out");
         proc.waitFor();
         
     }
@@ -85,7 +85,7 @@ public class MinisatInputMaker {
      */
     public boolean checkSAT() throws FileNotFoundException, IOException
     {
-        BufferedReader reader = new BufferedReader(new FileReader("X:/out1.out"));
+        BufferedReader reader = new BufferedReader(new FileReader("D:/out1.out"));
         String line = reader.readLine();
          reader.close();
         if(line.trim().equalsIgnoreCase("unsat"))
@@ -105,23 +105,23 @@ public class MinisatInputMaker {
      */
     public int[] hasilMinisat() throws IOException
     {
-        ArrayList<Integer> tmp = new ArrayList<Integer>();
+        ArrayList<Integer> listAngkaBaca = new ArrayList<Integer>();
 
         if(checkSAT())
         {
-           BufferedReader readerlagi = new BufferedReader(new FileReader("X:/out1.out"));
-           String sat =  readerlagi.readLine();
-           String[] hasilsplit = readerlagi.readLine().split("\\s");
+           BufferedReader reader = new BufferedReader(new FileReader("D:/out1.out"));
+           String SatOrUnsat =  reader.readLine();
+           String[] hasilsplit = reader.readLine().split("\\s");
            for(int i=0; i<hasilsplit.length;i++)
            {
-               tmp.add(Integer.parseInt(hasilsplit[i]));
+               listAngkaBaca.add(Integer.parseInt(hasilsplit[i]));
            }
-           readerlagi.close();
+           reader.close();
         }
-        int[] hasil = new int[tmp.size()];
-        for(int i=0;i<tmp.size();i++)
+        int[] hasil = new int[listAngkaBaca.size()];
+        for(int i=0;i<listAngkaBaca.size();i++)
         {
-            hasil[i] = tmp.get(i);
+            hasil[i] = listAngkaBaca.get(i);
         }
         return hasil;
 
@@ -138,10 +138,18 @@ public class MinisatInputMaker {
      */
     public int[] runAllMinisat(ArrayList<int[]> listClause, int banyakvariabel) throws IOException, InterruptedException
     {
-        String cnf = createInput(listClause,banyakvariabel);
-        writeMinisatInput(cnf);
-        runMinisat();
-        int[] hasil = hasilMinisat();
+        int[] hasil;
+        if(!listClause.isEmpty())
+        {
+            String cnf = createInput(listClause,banyakvariabel);
+            writeMinisatInput(cnf);
+            runMinisat();
+            hasil = hasilMinisat();
+        }
+        else
+        {
+            hasil = new int[0];
+        }
         return hasil;       
     }
 }
