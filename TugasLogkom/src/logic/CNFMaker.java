@@ -31,7 +31,7 @@ public class CNFMaker {
 
     public ArrayList<int[]> makeCNF() {
         ArrayList<Edge> terhubung = graph.getEdgeList();
-        ArrayList<int[]> tmp = new ArrayList<int[]>();
+        ArrayList<int[]> listClause = new ArrayList<int[]>();
         HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>();
         Set<Integer> set = new TreeSet<>();
 
@@ -61,11 +61,11 @@ public class CNFMaker {
             int[] clause3 = {a0, b0, -a1, -b1};
             int[] clause4 = {a0, b0, a1, b1};
 
-            tmp.add(clause1);
-            tmp.add(clause2);
-            tmp.add(clause3);
-            tmp.add(clause4);
+            listClause.add(clause1);
+            listClause.add(clause2);
+            listClause.add(clause3);
+            listClause.add(clause4);
         }
-        return tmp;
+        return listClause;
     }
 }

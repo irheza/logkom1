@@ -136,9 +136,9 @@ public class MinisatInputMaker {
      * @throws IOException
      * @throws InterruptedException 
      */
-    public int[] runAllMinisat(ArrayList<int[]> input, int banyakvariabel) throws IOException, InterruptedException
+    public int[] runAllMinisat(ArrayList<int[]> listClause, int banyakvariabel) throws IOException, InterruptedException
     {
-        String cnf = createInput(input,banyakvariabel);
+        String cnf = createInput(listClause,banyakvariabel);
         writeMinisatInput(cnf);
         runMinisat();
         int[] hasil = hasilMinisat();
