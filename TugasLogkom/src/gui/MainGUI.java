@@ -46,6 +46,8 @@ public class MainGUI extends JPanel implements MouseMotionListener {
     public MainGUI() {
         JPanel topButtonPanel = new JPanel();
         JPanel bottomButtonPanel = new JPanel();
+        JLabel widthLabel = new JLabel("Width: ");
+        JLabel heightLabel = new JLabel("Height: ");
         
         widthField = new JTextField("" + recW);
         heightField = new JTextField("" + recW);
@@ -81,7 +83,6 @@ public class MainGUI extends JPanel implements MouseMotionListener {
 
                     try {
                     // get solution
-
                         listColor = m.solve();
                         for (int i = 0; i < listColor.length; i++) {
                             System.out.println(listColor[i]);
@@ -132,19 +133,19 @@ public class MainGUI extends JPanel implements MouseMotionListener {
         });
 
         JPanel south = new JPanel();
-        text = new JLabel("label");
-
+        text = new JLabel();        
+        
+        topButtonPanel.add(new JPanel());
+        topButtonPanel.add(widthLabel);
         topButtonPanel.add(widthField);
+        topButtonPanel.add(heightLabel);
         topButtonPanel.add(heightField);
-        topButtonPanel.add(ok);
-        topButtonPanel.add(restart);
-        topButtonPanel.add(new JPanel());
         topButtonPanel.add(new JPanel());
 
         bottomButtonPanel.add(new JPanel());
-        bottomButtonPanel.add(new JPanel());
-        bottomButtonPanel.add(show);
-        bottomButtonPanel.add(new JPanel());
+        bottomButtonPanel.add(ok);
+        bottomButtonPanel.add(restart);
+        bottomButtonPanel.add(show);        
         bottomButtonPanel.add(new JPanel());
 
         south.setLayout(new GridLayout(2, 1));
@@ -160,7 +161,6 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isRectangle = true;
-                text.setText("rectangle");
                 heightField.setEditable(true);
             }
         });
@@ -168,7 +168,6 @@ public class MainGUI extends JPanel implements MouseMotionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 isRectangle = false;
-                text.setText("square");
                 heightField.setText(widthField.getText());
                 heightField.setEditable(false);
             }
@@ -192,7 +191,12 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                     currentSquareIndex = getRec(x, y);
                     if (currentSquareIndex < 0 && addRecStatus) // not inside a square
                     {
-                        text.setText("add a shape");
+                        if (isRectangle){
+                            text.setText("                              Add a rectangle");
+                        }
+                        else{
+                            text.setText("                              Add a square");
+                        }
                         add(x, y);
                     }
                 }
@@ -204,7 +208,7 @@ public class MainGUI extends JPanel implements MouseMotionListener {
                 int y = evt.getY();
                 if (evt.getClickCount() >= 2) {
                     remove(currentSquareIndex);
-                    text.setText("remove a shape");
+                    text.setText("                              Remove");
                 }
             }
         });
@@ -275,10 +279,12 @@ public class MainGUI extends JPanel implements MouseMotionListener {
 
     public void add(int x, int y) {
         if (numOfRecs < MAX) {
+            width = Integer.parseInt(widthField.getText());
+            height = Integer.parseInt(heightField.getText());
             if (isRectangle) {
-                rect[numOfRecs] = new Rectangle(x, y, 100, recW);
+                rect[numOfRecs] = new Rectangle(x, y, width, height);
             } else {
-                rect[numOfRecs] = new Rectangle(x, y, recW, recW);
+                rect[numOfRecs] = new Rectangle(x, y, width, width);
             }
             currentSquareIndex = numOfRecs;
             numOfRecs++;
