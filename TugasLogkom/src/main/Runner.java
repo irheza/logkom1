@@ -33,6 +33,10 @@ public class Runner {
                     null,
                     possibilities,
                     "D:");
+        if(drivePilihan==null)
+        {
+            System.exit(0);
+        }
         
         jFrame.setTitle("Tugas 1 Logika Komputasional");
         jFrame.setSize(1000, 700);
